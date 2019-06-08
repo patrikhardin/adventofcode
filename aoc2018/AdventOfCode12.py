@@ -1,7 +1,6 @@
-
 sum = 0
 freqs = set()
-with open('input1.txt','r') as file:
+with open('input1.txt', 'r') as file:
     ok = True
     lines = list(file.readlines())
     while ok:

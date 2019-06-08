@@ -17,12 +17,12 @@ import datetime
 from collections import defaultdict
 
 log = []
-row = -1 #this will increase by 1 when a new row should be created. Never reset
-firstMinCol = 2 #column with first minute
+row = -1  # this will increase by 1 when a new row should be created. Never reset
+firstMinCol = 2  # column with first minute
 
-with open('input4.txt','r') as file:
+with open('input4.txt', 'r') as file:
     records = sorted(file.readlines())
-    #Go through the records
+    # Go through the records
     for i in range(len(records)):
 
         timestamp = records[i][1:17]
@@ -31,35 +31,35 @@ with open('input4.txt','r') as file:
         minute = timestamp[14:16]
         message = records[i][18:]
 
-        #Check if message represemts a new day. If so, then enter a new row and insert date and guard ID
+        # Check if message represemts a new day. If so, then enter a new row and insert date and guard ID
         if '#' in message:
-            #Reset sate change minutes for the day
+            # Reset sate change minutes for the day
             fallAsleepMin = None
             lastSleepMin = None
             # Add row in matrix and increase row count to update row for future messages
-            log.append([0]*62)
+            log.append([0] * 62)
             row += 1
-            #Add one day if guard starts just before midnight
+            # Add one day if guard starts just before midnight
             if hour == '00':
                 log[row][0] = date
             elif hour == '23':
-                log[row][0] = str(datetime.datetime.strptime(date,'%Y-%m-%d') + datetime.timedelta(days=1))[:10]
-            #Add guard ID to row
+                log[row][0] = str(datetime.datetime.strptime(date, '%Y-%m-%d') + datetime.timedelta(days=1))[:10]
+            # Add guard ID to row
             log[row][1] = message.split()[1]
 
-        #Determine during which minutes the guard is awake or asleep. Awake is the first state and changes the minute alseep message occurrs
+        # Determine during which minutes the guard is awake or asleep. Awake is the first state and changes the minute alseep message occurrs
         elif 'asleep' in message:
             startSleepMin = int(minute)
 
         elif 'wake' in message:
             lastSleepMin = int(minute)
 
-            for m in range(startSleepMin + firstMinCol,lastSleepMin + firstMinCol):
+            for m in range(startSleepMin + firstMinCol, lastSleepMin + firstMinCol):
                 log[row][m] = 1
 
-#print(log[0]) # 0:22 SLEEP 0:42 AWAKE 0:53 SLEEP 0:58 AWAKE
+    # print(log[0]) # 0:22 SLEEP 0:42 AWAKE 0:53 SLEEP 0:58 AWAKE
 
-    #Add the total amount of slept minutes in logSum list
+    # Add the total amount of slept minutes in logSum list
 
     logSum = defaultdict(lambda: 0)
     for row in range(len(log)):
@@ -69,7 +69,7 @@ with open('input4.txt','r') as file:
     maxID = max(logSum, key=logSum.get)
     maxIDint = int(max(logSum, key=logSum.get)[1:])
 
-#Filter rows in log where ID = maxID. Find max column and sum it up
+# Filter rows in log where ID = maxID. Find max column and sum it up
 
 maxLog = []
 maxLogMinutes = []
@@ -78,7 +78,7 @@ for row in log:
         maxLog.append(row)
         maxLogMinutes.append(row[2:])
 
-#Find largest col in maxLogMinutes
+# Find largest col in maxLogMinutes
 
 maxSum = 0
 min = 0

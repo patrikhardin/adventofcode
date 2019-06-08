@@ -1,29 +1,29 @@
-#Function that returns all manhattan points of degree n
-def manhattanPoints(x,y,d):
-
+# Function that returns all manhattan points of degree n
+def manhattanPoints(x, y, d):
     points = []
 
-    #The manhattan points will lie on a rhoumbus which can be fully included in a square with sides of size 2*n and (x,y) in center
+    # The manhattan points will lie on a rhoumbus which can be fully included in a square with sides of size 2*n and (x,y) in center
     topLeftX = x - d
     topLeftY = y - d
 
-    for j in range(2*d+1):
-        for i in range(2*d+1):
+    for j in range(2 * d + 1):
+        for i in range(2 * d + 1):
             if abs((topLeftX + i) - x) + abs((topLeftY + j) - y) == d:
-                point = [topLeftX + i,topLeftY + j]
+                point = [topLeftX + i, topLeftY + j]
                 if not point in points:
                     points.append(point)
 
     return points
 
+
 # Function that looks in point (x,y) in the 'space'-matrix and returns which non-None value is closest. If two are equally close, then a dot is returned
-def closestCoordinate(x,y,space):
-    d = 0 #Reset the distance to 0 after every search
+def closestCoordinate(x, y, space):
+    d = 0  # Reset the distance to 0 after every search
     found = False
     pointValue = ''
     while not found:
         nPoints = 0
-        for point in manhattanPoints(x,y,d):
+        for point in manhattanPoints(x, y, d):
             if space[point[0]][point[1]] != None:
                 pointValue = space[point[0]][point[1]]
                 nPoints += 1
@@ -39,12 +39,12 @@ def closestCoordinate(x,y,space):
         d += 1
 
 
-#MAIN. Assumption: x outer loop. y is inner loop
+# MAIN. Assumption: x outer loop. y is inner loop
 
-#Start with creating the space and assigning the coordinates
+# Start with creating the space and assigning the coordinates
 import string
 
-with open('input6.txt','r') as file:
+with open('input6.txt', 'r') as file:
     lines = file.readlines()
 xx = []
 yy = []
@@ -53,14 +53,14 @@ for line in lines:
     xx.append(int(line.split()[0].strip(',')))
     yy.append(int(line.split()[1].strip(' ')))
 
-#Create the space
+# Create the space
 space = []
-for i in range(max(xx)+1):
-    space.append([None]*(max(yy)+1))
+for i in range(max(xx) + 1):
+    space.append([None] * (max(yy) + 1))
 
-#Fill space with coordinates
+# Fill space with coordinates
 nCoordinate = 0
-for i,j in zip(xx,yy):
+for i, j in zip(xx, yy):
     space[i][j] = string.ascii_letters[nCoordinate]
     nCoordinate += 1
 
@@ -74,8 +74,8 @@ for i,j in zip(xx,yy):
     for j in range(len(space[0])):
         space[i][j] = closestCoordinate(i,j,space)'''
 
-
-print(space[350][353]) #
-print(closestCoordinate(0,0,space)) #SHOULD NOT BE CLOSE TO A. This is because negative list entries is allowed. FIX!!!
-print(closestCoordinate(350,352,space)) #close to a
-#WHY ARE THESE THE SAME?
+print(space[350][353])  #
+print(closestCoordinate(0, 0,
+                        space))  # SHOULD NOT BE CLOSE TO A. This is because negative list entries is allowed. FIX!!!
+print(closestCoordinate(350, 352, space))  # close to a
+# WHY ARE THESE THE SAME?
